@@ -13,15 +13,15 @@ class Formatters {
     return _timeFormat.format(time);
   }
 
-  static String formatCurrency(double amount) {
-    return '₹${amount.toStringAsFixed(amount.truncateToDouble() == amount ? 0 : 2)}';
+  static String formatCurrency(num amount) {
+    final d = amount.toDouble();
+    return '₹${d.toStringAsFixed(d.truncateToDouble() == d ? 0 : 2)}';
   }
 
   static Future<bool> openWhatsApp({
     required String phone,
     required String message,
   }) async {
-    // Clean phone number (remove spaces, dashes)
     String cleanPhone = phone.replaceAll(RegExp(r'[^0-9]'), '');
     if (!cleanPhone.startsWith('91') && cleanPhone.length == 10) {
       cleanPhone = '91$cleanPhone';

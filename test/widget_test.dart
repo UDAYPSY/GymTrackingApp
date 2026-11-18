@@ -49,9 +49,9 @@ void main() {
         startDate: DateTime(2026, 1, 1),
         endDate: DateTime(2026, 4, 1),
         planName: '3 Months Gold',
-        totalAmount: 5000,
-        paidAmount: 3000,
-        dueAmount: 2000,
+        totalAmount: 5000.0,
+        paidAmount: 3000.0,
+        dueAmount: 2000.0,
         status: MemberStatus.active,
       );
 
@@ -77,8 +77,8 @@ void main() {
         id: 'p1',
         name: 'Annual VIP',
         durationMonths: 12,
-        price: 15000,
-        admissionFee: 500,
+        price: 15000.0,
+        admissionFee: 500.0,
       );
       final map = plan.toMap();
       final fromMap = PlanModel.fromMap(map);
