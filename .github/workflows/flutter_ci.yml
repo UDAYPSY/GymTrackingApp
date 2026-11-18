@@ -54,7 +54,20 @@ jobs:
         run: flutter test
 
       - name: Build Flutter Bundle
-        run: flutter build bundle -v
+        run: |
+          if ! flutter build bundle -v > bundle.log 2>&1; then
+            echo "=== BUNDLE LOG FAILURE ==="
+            cat bundle.log | tail -n 80
+            while IFS= read -r line; do
+              clean_line=$(echo "$line" | tr -d '\r')
+              [ -n "$clean_line" ] && echo "::error title=DartError::$clean_line"
+            done < <(grep -E "\.dart:[0-9]+" bundle.log | tail -n 10)
+            while IFS= read -r line; do
+              clean_line=$(echo "$line" | tr -d '\r')
+              [ -n "$clean_line" ] && echo "::error title=BundleError::$clean_line"
+            done < <(grep -E -i "(error:|exception:|failed:)" bundle.log | tail -n 10)
+            exit 1
+          fi
 
       - name: Build Android Debug APK
         run: flutter build apk --debug --android-skip-build-dependency-validation -v
