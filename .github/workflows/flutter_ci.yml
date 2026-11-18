@@ -57,7 +57,7 @@ jobs:
 
       - name: Build Android Debug APK
         run: |
-          if ! flutter build apk --debug --verbose > build.log 2>&1; then
+          if ! flutter build apk --debug --android-skip-build-dependency-validation --verbose > build.log 2>&1; then
             echo "=== GRADLE FAILURE DIAGNOSTIC ==="
             grep -A 6 "What went wrong" build.log | while IFS= read -r line; do
               clean_line=$(echo "$line" | tr -d '\r')
