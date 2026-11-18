@@ -14,8 +14,13 @@ final todayAttendanceStreamProvider = StreamProvider<List<AttendanceModel>>((ref
 });
 
 class AttendanceRepository {
-  final CollectionReference _attendanceCollection =
-      FirebaseFirestore.instance.collection(AppConstants.attendanceCollection);
+  CollectionReference? get _attendanceCollection {
+    try {
+      return FirebaseFirestore.instance.collection(AppConstants.attendanceCollection);
+    } catch (_) {
+      return null;
+    }
+  }
 
   final List<AttendanceModel> _mockAttendance = [
     AttendanceModel(
@@ -45,10 +50,14 @@ class AttendanceRepository {
 
   Stream<List<AttendanceModel>> watchTodayAttendance() {
     try {
+      final collection = _attendanceCollection;
+      if (collection == null) {
+        return _mockStreamController.stream;
+      }
       final now = DateTime.now();
       final startOfDay = DateTime(now.year, now.month, now.day);
-      
-      return _attendanceCollection
+
+      return collection
           .where('timestamp', isGreaterThanOrEqualTo: startOfDay.toIso8601String())
           .snapshots()
           .map((snapshot) {
@@ -85,10 +94,13 @@ class AttendanceRepository {
     );
 
     try {
-      await _attendanceCollection.doc(entry.id).set(entry.toMap());
-    } catch (_) {
-      _mockAttendance.insert(0, entry);
-      _mockStreamController.add(List.from(_mockAttendance));
-    }
+      final collection = _attendanceCollection;
+      if (collection != null) {
+        await collection.doc(entry.id).set(entry.toMap());
+        return;
+      }
+    } catch (_) {}
+    _mockAttendance.insert(0, entry);
+    _mockStreamController.add(List.from(_mockAttendance));
   }
 }

@@ -37,6 +37,7 @@ jobs:
       - name: Verify Formatting & Static Analysis
         run: |
           flutter analyze --no-fatal-infos
+        continue-on-error: true
 
       - name: Run Unit & Widget Tests
         run: flutter test

@@ -3,9 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import 'package:uuid/uuid.dart';
 import '../../core/constants/app_constants.dart';
-import '../../core/theme/app_theme.dart';
 import '../../core/utils/formatters.dart';
 import '../../members/models/member_model.dart';
 import '../../members/repositories/member_repository.dart';
@@ -36,6 +34,9 @@ class _CreateInvoiceScreenState extends ConsumerState<CreateInvoiceScreen> {
     final paid = double.tryParse(_paidController.text) ?? 0.0;
     final due = total - paid > 0 ? total - paid : 0.0;
 
+    final primaryColor = PdfColor.fromHex('#FF5722');
+    final greyColor = PdfColor.fromHex('#616161');
+
     final doc = pw.Document();
 
     doc.addPage(
@@ -58,7 +59,7 @@ class _CreateInvoiceScreenState extends ConsumerState<CreateInvoiceScreen> {
                           style: pw.TextStyle(
                             fontSize: 22,
                             fontWeight: pw.FontWeight.bold,
-                            color: PdfColors.deepOrange,
+                            color: primaryColor,
                           ),
                         ),
                         pw.Text('Official Membership Invoice / Receipt'),
@@ -66,7 +67,7 @@ class _CreateInvoiceScreenState extends ConsumerState<CreateInvoiceScreen> {
                     ),
                     pw.Text(
                       'ORIGINAL',
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.grey700),
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: greyColor),
                     ),
                   ],
                 ),
@@ -95,7 +96,7 @@ class _CreateInvoiceScreenState extends ConsumerState<CreateInvoiceScreen> {
                   ],
                 ),
                 pw.SizedBox(height: 24),
-                pw.TableHelper.fromTextArray(
+                pw.Table.fromTextArray(
                   headers: ['Description', 'Validity Period', 'Amount (INR)'],
                   data: [
                     [
@@ -105,7 +106,7 @@ class _CreateInvoiceScreenState extends ConsumerState<CreateInvoiceScreen> {
                     ],
                   ],
                   headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.white),
-                  headerDecoration: const pw.BoxDecoration(color: PdfColors.deepOrange),
+                  headerDecoration: pw.BoxDecoration(color: primaryColor),
                   cellAlignment: pw.Alignment.centerLeft,
                 ),
                 pw.SizedBox(height: 20),
@@ -116,8 +117,8 @@ class _CreateInvoiceScreenState extends ConsumerState<CreateInvoiceScreen> {
                       crossAxisAlignment: pw.CrossAxisAlignment.end,
                       children: [
                         pw.Text('Total Amount: ${Formatters.formatCurrency(total)}', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                        pw.Text('Amount Paid: ${Formatters.formatCurrency(paid)}', style: pw.TextStyle(color: PdfColors.green700, fontWeight: pw.FontWeight.bold)),
-                        pw.Text('Pending Due: ${Formatters.formatCurrency(due)}', style: pw.TextStyle(color: PdfColors.red700, fontWeight: pw.FontWeight.bold)),
+                        pw.Text('Amount Paid: ${Formatters.formatCurrency(paid)}', style: pw.TextStyle(color: PdfColors.green, fontWeight: pw.FontWeight.bold)),
+                        pw.Text('Pending Due: ${Formatters.formatCurrency(due)}', style: pw.TextStyle(color: PdfColors.red, fontWeight: pw.FontWeight.bold)),
                       ],
                     ),
                   ],
@@ -127,7 +128,7 @@ class _CreateInvoiceScreenState extends ConsumerState<CreateInvoiceScreen> {
                 pw.Center(
                   child: pw.Text(
                     'Thank you for training with GymManager! Maintain consistent workouts for best results.',
-                    style: const pw.TextStyle(color: PdfColors.grey700),
+                    style: pw.TextStyle(color: greyColor),
                   ),
                 ),
               ],

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gym_manager/core/constants/app_constants.dart';
@@ -6,6 +5,8 @@ import 'package:gym_manager/features/members/models/member_model.dart';
 import 'package:gym_manager/main.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('MemberModel Unit Tests', () {
     test('Member expiration calculation should identify expiring and expired members', () {
       final now = DateTime.now();

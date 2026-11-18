@@ -14,8 +14,13 @@ final membersStreamProvider = StreamProvider<List<MemberModel>>((ref) {
 });
 
 class MemberRepository {
-  final CollectionReference _membersCollection =
-      FirebaseFirestore.instance.collection(AppConstants.membersCollection);
+  CollectionReference? get _membersCollection {
+    try {
+      return FirebaseFirestore.instance.collection(AppConstants.membersCollection);
+    } catch (_) {
+      return null;
+    }
+  }
 
   // In-memory mock data for offline preview and automated CI testing
   final List<MemberModel> _mockMembers = [
@@ -78,7 +83,11 @@ class MemberRepository {
 
   Stream<List<MemberModel>> watchMembers() {
     try {
-      return _membersCollection.snapshots().map((snapshot) {
+      final collection = _membersCollection;
+      if (collection == null) {
+        return _mockStreamController.stream;
+      }
+      return collection.snapshots().map((snapshot) {
         if (snapshot.docs.isEmpty) {
           return _mockMembers;
         }
@@ -98,22 +107,28 @@ class MemberRepository {
 
   Future<void> addMember(MemberModel member) async {
     try {
-      await _membersCollection.doc(member.id).set(member.toMap());
-    } catch (_) {
-      _mockMembers.insert(0, member);
-      _mockStreamController.add(List.from(_mockMembers));
-    }
+      final collection = _membersCollection;
+      if (collection != null) {
+        await collection.doc(member.id).set(member.toMap());
+        return;
+      }
+    } catch (_) {}
+    _mockMembers.insert(0, member);
+    _mockStreamController.add(List.from(_mockMembers));
   }
 
   Future<void> updateMember(MemberModel member) async {
     try {
-      await _membersCollection.doc(member.id).update(member.toMap());
-    } catch (_) {
-      final index = _mockMembers.indexWhere((m) => m.id == member.id);
-      if (index != -1) {
-        _mockMembers[index] = member;
-        _mockStreamController.add(List.from(_mockMembers));
+      final collection = _membersCollection;
+      if (collection != null) {
+        await collection.doc(member.id).update(member.toMap());
+        return;
       }
+    } catch (_) {}
+    final index = _mockMembers.indexWhere((m) => m.id == member.id);
+    if (index != -1) {
+      _mockMembers[index] = member;
+      _mockStreamController.add(List.from(_mockMembers));
     }
   }
 
