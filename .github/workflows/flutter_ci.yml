@@ -35,14 +35,22 @@ jobs:
       - name: Verify Flutter Installation
         run: flutter doctor -v
 
-      - name: Configure Android local.properties
+      - name: Configure Android Platform Files
         run: |
+          mkdir -p /tmp/res_backup
+          cp -r android/app/src/main/res/* /tmp/res_backup/ || true
+          cp android/app/src/main/AndroidManifest.xml /tmp/res_backup/AndroidManifest.xml || true
+          rm -rf android
+          flutter create --platforms=android --project-name=gym_manager --org=com.gymhelper .
+          mkdir -p android/app/src/main/res/drawable
+          mkdir -p android/app/src/main/res/values
+          cp -r /tmp/res_backup/* android/app/src/main/res/ || true
+          cp /tmp/res_backup/AndroidManifest.xml android/app/src/main/AndroidManifest.xml || true
           FLUTTER_SDK_DIR="$(dirname "$(dirname "$(which flutter)")")"
           echo "flutter.sdk=$FLUTTER_SDK_DIR" > android/local.properties
+          echo "flutter.minSdkVersion=23" >> android/local.properties
           cat android/local.properties
-
-      - name: Ensure Gradle Wrapper Executable
-        run: chmod +x android/gradlew
+          chmod +x android/gradlew
 
       - name: Install Dependencies
         run: flutter pub get
@@ -55,7 +63,7 @@ jobs:
 
       - name: Build Android Debug APK
         run: |
-          if ! flutter build apk --debug --android-skip-build-dependency-validation --verbose > build.log 2>&1; then
+          if ! flutter build apk --debug --verbose > build.log 2>&1; then
             echo "=== LAST 50 LINES OF BUILD LOG ==="
             tail -n 50 build.log
             while IFS= read -r line; do
