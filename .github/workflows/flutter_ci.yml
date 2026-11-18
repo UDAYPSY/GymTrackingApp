@@ -49,7 +49,7 @@ jobs:
         run: flutter pub get
 
       - name: Verify Formatting & Static Analysis
-        run: flutter analyze --no-fatal-infos || true
+        run: flutter analyze --no-fatal-infos
 
       - name: Run Unit & Widget Tests
         run: flutter test
