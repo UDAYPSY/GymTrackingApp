@@ -56,11 +56,12 @@ jobs:
       - name: Build Android Debug APK
         run: |
           if ! flutter build apk --debug --android-skip-build-dependency-validation --verbose > build.log 2>&1; then
-            cat build.log | tail -n 80
+            echo "=== LAST 50 LINES OF BUILD LOG ==="
+            tail -n 50 build.log
             while IFS= read -r line; do
               clean_line=$(echo "$line" | tr -d '\r')
-              [ -n "$clean_line" ] && echo "::error title=BuildError::$clean_line"
-            done < <(grep -E -C 2 -i "(error|exception|failed)" build.log | head -n 15)
+              [ -n "$clean_line" ] && echo "::error title=BuildFailure::$clean_line"
+            done < <(tail -n 20 build.log)
             exit 1
           fi
 
