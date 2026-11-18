@@ -57,15 +57,18 @@ jobs:
 
       - name: Build Android Debug APK
         run: |
-          set -o pipefail
-          flutter build apk --debug --verbose > build.log 2>&1 || {
-            echo "### Gradle Build Error Log" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            tail -n 120 build.log >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            tail -n 60 build.log
+          if ! flutter build apk --debug --verbose > build.log 2>&1; then
+            echo "=== BUILD LOG TAIL ==="
+            tail -n 50 build.log
+            while IFS= read -r line; do
+              # Clean line for annotation
+              clean_line=$(echo "$line" | tr -d '\r')
+              if [ -n "$clean_line" ]; then
+                echo "::error title=Gradle Error::$clean_line"
+              fi
+            done < <(tail -n 25 build.log)
             exit 1
-          }
+          fi
 
       - name: Locate Generated APK
         run: |
