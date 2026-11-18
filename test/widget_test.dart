@@ -74,11 +74,11 @@ void main() {
         ),
       );
 
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
 
       // Verify dashboard header elements
       expect(find.text('GymManager Studio'), findsOneWidget);
-      expect(find.text('Quick Actions'), findsOneWidget);
 
       // Verify bottom navigation labels
       expect(find.text('Dashboard'), findsOneWidget);

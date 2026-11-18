@@ -44,38 +44,32 @@ class AttendanceRepository {
   final StreamController<List<AttendanceModel>> _mockStreamController =
       StreamController<List<AttendanceModel>>.broadcast();
 
-  AttendanceRepository() {
-    _mockStreamController.add(_mockAttendance);
-  }
-
-  Stream<List<AttendanceModel>> watchTodayAttendance() {
+  Stream<List<AttendanceModel>> watchTodayAttendance() async* {
+    yield List.from(_mockAttendance);
     try {
       final collection = _attendanceCollection;
-      if (collection == null) {
-        return _mockStreamController.stream;
-      }
-      final now = DateTime.now();
-      final startOfDay = DateTime(now.year, now.month, now.day);
+      if (collection != null) {
+        final now = DateTime.now();
+        final startOfDay = DateTime(now.year, now.month, now.day);
 
-      return collection
-          .where('timestamp', isGreaterThanOrEqualTo: startOfDay.toIso8601String())
-          .snapshots()
-          .map((snapshot) {
-        if (snapshot.docs.isEmpty) {
-          return _mockAttendance;
-        }
-        return snapshot.docs.map((doc) {
-          return AttendanceModel.fromMap(
-            doc.data() as Map<String, dynamic>,
-            docId: doc.id,
-          );
-        }).toList();
-      }).handleError((_) {
-        return _mockAttendance;
-      });
-    } catch (_) {
-      return _mockStreamController.stream;
-    }
+        yield* collection
+            .where('timestamp', isGreaterThanOrEqualTo: startOfDay.toIso8601String())
+            .snapshots()
+            .map((snapshot) {
+          if (snapshot.docs.isEmpty) {
+            return _mockAttendance;
+          }
+          return snapshot.docs.map((doc) {
+            return AttendanceModel.fromMap(
+              doc.data() as Map<String, dynamic>,
+              docId: doc.id,
+            );
+          }).toList();
+        }).handleError((_) => _mockAttendance);
+        return;
+      }
+    } catch (_) {}
+    yield* _mockStreamController.stream;
   }
 
   Future<void> markAttendance({

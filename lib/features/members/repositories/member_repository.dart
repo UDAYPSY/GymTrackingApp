@@ -77,32 +77,26 @@ class MemberRepository {
   final StreamController<List<MemberModel>> _mockStreamController =
       StreamController<List<MemberModel>>.broadcast();
 
-  MemberRepository() {
-    _mockStreamController.add(_mockMembers);
-  }
-
-  Stream<List<MemberModel>> watchMembers() {
+  Stream<List<MemberModel>> watchMembers() async* {
+    yield List.from(_mockMembers);
     try {
       final collection = _membersCollection;
-      if (collection == null) {
-        return _mockStreamController.stream;
+      if (collection != null) {
+        yield* collection.snapshots().map((snapshot) {
+          if (snapshot.docs.isEmpty) {
+            return _mockMembers;
+          }
+          return snapshot.docs.map((doc) {
+            return MemberModel.fromMap(
+              doc.data() as Map<String, dynamic>,
+              docId: doc.id,
+            );
+          }).toList();
+        }).handleError((_) => _mockMembers);
+        return;
       }
-      return collection.snapshots().map((snapshot) {
-        if (snapshot.docs.isEmpty) {
-          return _mockMembers;
-        }
-        return snapshot.docs.map((doc) {
-          return MemberModel.fromMap(
-            doc.data() as Map<String, dynamic>,
-            docId: doc.id,
-          );
-        }).toList();
-      }).handleError((_) {
-        return _mockMembers;
-      });
-    } catch (_) {
-      return _mockStreamController.stream;
-    }
+    } catch (_) {}
+    yield* _mockStreamController.stream;
   }
 
   Future<void> addMember(MemberModel member) async {
