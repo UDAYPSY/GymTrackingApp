@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/theme/app_theme.dart';
-import '../../core/utils/formatters.dart';
-import '../../members/repositories/member_repository.dart';
-import '../models/workout_model.dart';
+import 'package:gym_manager/core/theme/app_theme.dart';
+import 'package:gym_manager/core/utils/formatters.dart';
+import 'package:gym_manager/features/members/repositories/member_repository.dart';
+import 'package:gym_manager/features/workouts/models/workout_model.dart';
 
 class WorkoutPlannerScreen extends ConsumerStatefulWidget {
   const WorkoutPlannerScreen({super.key});

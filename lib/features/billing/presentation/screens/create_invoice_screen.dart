@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import '../../core/constants/app_constants.dart';
-import '../../core/utils/formatters.dart';
-import '../../members/models/member_model.dart';
-import '../../members/repositories/member_repository.dart';
+import 'package:gym_manager/core/constants/app_constants.dart';
+import 'package:gym_manager/core/utils/formatters.dart';
+import 'package:gym_manager/features/members/models/member_model.dart';
+import 'package:gym_manager/features/members/repositories/member_repository.dart';
 
 class CreateInvoiceScreen extends ConsumerStatefulWidget {
   const CreateInvoiceScreen({super.key});

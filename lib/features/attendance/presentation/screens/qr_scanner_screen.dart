@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import '../../core/constants/app_constants.dart';
-import '../../core/theme/app_theme.dart';
-import '../../members/repositories/member_repository.dart';
-import '../repositories/attendance_repository.dart';
+import 'package:gym_manager/core/constants/app_constants.dart';
+import 'package:gym_manager/core/theme/app_theme.dart';
+import 'package:gym_manager/features/members/repositories/member_repository.dart';
+import 'package:gym_manager/features/attendance/repositories/attendance_repository.dart';
 
 class QRScannerScreen extends ConsumerStatefulWidget {
   const QRScannerScreen({super.key});

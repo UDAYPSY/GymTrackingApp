@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'core/constants/app_constants.dart';
-import 'core/services/firebase_service.dart';
-import 'core/theme/app_theme.dart';
-import 'features/dashboard/presentation/screens/dashboard_screen.dart';
+import 'package:gym_manager/core/constants/app_constants.dart';
+import 'package:gym_manager/core/services/firebase_service.dart';
+import 'package:gym_manager/core/theme/app_theme.dart';
+import 'package:gym_manager/features/dashboard/presentation/screens/dashboard_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

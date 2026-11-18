@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
-import '../../core/constants/app_constants.dart';
-import '../../core/theme/app_theme.dart';
-import '../../core/utils/formatters.dart';
-import '../models/member_model.dart';
-import '../repositories/member_repository.dart';
+import 'package:gym_manager/core/constants/app_constants.dart';
+import 'package:gym_manager/core/theme/app_theme.dart';
+import 'package:gym_manager/core/utils/formatters.dart';
+import 'package:gym_manager/features/members/models/member_model.dart';
+import 'package:gym_manager/features/members/repositories/member_repository.dart';
 
 class AddMemberScreen extends ConsumerStatefulWidget {
   const AddMemberScreen({super.key});

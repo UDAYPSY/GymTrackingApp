@@ -1,4 +1,4 @@
-import '../../core/constants/app_constants.dart';
+import 'package:gym_manager/core/constants/app_constants.dart';
 
 class MemberModel {
   final String id;

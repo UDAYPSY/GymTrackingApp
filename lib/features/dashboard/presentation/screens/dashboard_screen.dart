@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/constants/app_constants.dart';
-import '../../core/theme/app_theme.dart';
-import '../../core/utils/formatters.dart';
-import '../../attendance/presentation/screens/attendance_screen.dart';
-import '../../attendance/presentation/screens/qr_scanner_screen.dart';
-import '../../attendance/repositories/attendance_repository.dart';
-import '../../billing/presentation/screens/billing_dashboard_screen.dart';
-import '../../billing/presentation/screens/create_invoice_screen.dart';
-import '../../members/presentation/screens/add_member_screen.dart';
-import '../../members/presentation/screens/members_list_screen.dart';
-import '../../members/repositories/member_repository.dart';
-import '../../workouts/presentation/screens/workout_planner_screen.dart';
+import 'package:gym_manager/core/constants/app_constants.dart';
+import 'package:gym_manager/core/theme/app_theme.dart';
+import 'package:gym_manager/core/utils/formatters.dart';
+import 'package:gym_manager/features/attendance/presentation/screens/attendance_screen.dart';
+import 'package:gym_manager/features/attendance/presentation/screens/qr_scanner_screen.dart';
+import 'package:gym_manager/features/attendance/repositories/attendance_repository.dart';
+import 'package:gym_manager/features/billing/presentation/screens/billing_dashboard_screen.dart';
+import 'package:gym_manager/features/billing/presentation/screens/create_invoice_screen.dart';
+import 'package:gym_manager/features/members/presentation/screens/add_member_screen.dart';
+import 'package:gym_manager/features/members/presentation/screens/members_list_screen.dart';
+import 'package:gym_manager/features/members/repositories/member_repository.dart';
+import 'package:gym_manager/features/workouts/presentation/screens/workout_planner_screen.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});

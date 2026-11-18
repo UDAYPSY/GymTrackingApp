@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/constants/app_constants.dart';
-import '../models/member_model.dart';
+import 'package:gym_manager/core/constants/app_constants.dart';
+import 'package:gym_manager/features/members/models/member_model.dart';
 
 final memberRepositoryProvider = Provider<MemberRepository>((ref) {
   return MemberRepository();

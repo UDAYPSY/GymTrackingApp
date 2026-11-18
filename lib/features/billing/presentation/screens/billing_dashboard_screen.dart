@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/constants/app_constants.dart';
-import '../../core/theme/app_theme.dart';
-import '../../core/utils/formatters.dart';
-import '../../members/repositories/member_repository.dart';
-import '../models/invoice_model.dart';
-import 'create_invoice_screen.dart';
+import 'package:gym_manager/core/constants/app_constants.dart';
+import 'package:gym_manager/core/theme/app_theme.dart';
+import 'package:gym_manager/core/utils/formatters.dart';
+import 'package:gym_manager/features/members/repositories/member_repository.dart';
+import 'package:gym_manager/features/billing/models/invoice_model.dart';
+import 'package:gym_manager/features/billing/presentation/screens/create_invoice_screen.dart';
 
 class BillingDashboardScreen extends ConsumerWidget {
   const BillingDashboardScreen({super.key});

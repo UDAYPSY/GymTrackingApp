@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/constants/app_constants.dart';
-import '../../core/theme/app_theme.dart';
-import '../../core/utils/formatters.dart';
-import '../models/member_model.dart';
-import '../repositories/member_repository.dart';
-import 'add_member_screen.dart';
-import 'member_detail_screen.dart';
+import 'package:gym_manager/core/constants/app_constants.dart';
+import 'package:gym_manager/core/theme/app_theme.dart';
+import 'package:gym_manager/core/utils/formatters.dart';
+import 'package:gym_manager/features/members/models/member_model.dart';
+import 'package:gym_manager/features/members/repositories/member_repository.dart';
+import 'package:gym_manager/features/members/presentation/screens/add_member_screen.dart';
+import 'package:gym_manager/features/members/presentation/screens/member_detail_screen.dart';
 
 class MembersListScreen extends ConsumerStatefulWidget {
   const MembersListScreen({super.key});
