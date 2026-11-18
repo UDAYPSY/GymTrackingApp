@@ -56,16 +56,16 @@ jobs:
       - name: Build Flutter Bundle
         run: |
           if ! flutter build bundle -v > bundle.log 2>&1; then
-            echo "=== BUNDLE LOG FAILURE ==="
-            cat bundle.log | tail -n 80
+            echo "=== BUNDLE CRASH LOG ==="
+            cat flutter_*.log || true
             while IFS= read -r line; do
               clean_line=$(echo "$line" | tr -d '\r')
-              [ -n "$clean_line" ] && echo "::error title=DartError::$clean_line"
-            done < <(grep -E "\.dart:[0-9]+" bundle.log | tail -n 10)
+              [ -n "$clean_line" ] && echo "::error title=CrashReport::$clean_line"
+            done < <(cat flutter_*.log | head -n 12)
             while IFS= read -r line; do
               clean_line=$(echo "$line" | tr -d '\r')
-              [ -n "$clean_line" ] && echo "::error title=BundleError::$clean_line"
-            done < <(grep -E -i "(error:|exception:|failed:)" bundle.log | tail -n 10)
+              [ -n "$clean_line" ] && echo "::error title=TopFrame::$clean_line"
+            done < <(grep -E -B 4 -A 4 "#0" bundle.log | head -n 10)
             exit 1
           fi
 
