@@ -58,18 +58,14 @@ jobs:
       - name: Build Android Debug APK
         run: |
           if ! flutter build apk --debug --verbose > build.log 2>&1; then
-            echo "=== BUILD LOG FAILURE EXTRACT ==="
-            grep -E -B 15 "FlutterCommandRunner\.runCommand" build.log | tail -n 15 | while IFS= read -r line; do
+            echo "=== GRADLE FAILURE DIAGNOSTIC ==="
+            grep -A 6 "What went wrong" build.log | while IFS= read -r line; do
               clean_line=$(echo "$line" | tr -d '\r')
-              if [ -n "$clean_line" ]; then
-                echo "::error title=Trace::$clean_line"
-              fi
+              [ -n "$clean_line" ] && echo "::error title=GradleRootCause::$clean_line"
             done
-            grep -E -C 3 -i "(exception|error|failed|oops|cause)" build.log | head -n 30 | while IFS= read -r line; do
+            grep -B 5 "AndroidGradleBuilder\.buildApk" build.log | while IFS= read -r line; do
               clean_line=$(echo "$line" | tr -d '\r')
-              if [ -n "$clean_line" ]; then
-                echo "::error title=Log::$clean_line"
-              fi
+              [ -n "$clean_line" ] && echo "::error title=FlutterTrace::$clean_line"
             done
             exit 1
           fi
