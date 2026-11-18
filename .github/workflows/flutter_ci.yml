@@ -65,7 +65,7 @@ jobs:
           fi
 
       - name: Build Android Debug APK
-        run: flutter build apk --debug --android-skip-build-dependency-validation -v
+        run: flutter build apk --debug --android-skip-build-dependency-validation
 
       - name: Locate Generated APK
         run: |
