@@ -31,16 +31,14 @@ jobs:
       - name: Verify Flutter Installation
         run: flutter doctor -v
 
-      - name: Generate Official Android Platform Toolchain
-        run: |
-          rm -rf android
-          flutter create --platforms=android --org=com.gymhelper .
-
       - name: Install Dependencies
         run: flutter pub get
 
       - name: Verify Formatting & Static Analysis
         run: flutter analyze --no-fatal-infos || true
+
+      - name: Make Gradle Wrapper Executable
+        run: chmod +x android/gradlew || true
 
       - name: Run Unit & Widget Tests
         run: flutter test --reporter expanded
@@ -52,4 +50,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: gym-tracking-app-debug-apk
-          path: build/app/outputs/flutter-apk/*.apk
+          path: build/app/outputs/**/*.apk
