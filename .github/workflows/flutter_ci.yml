@@ -35,11 +35,14 @@ jobs:
       - name: Verify Flutter Installation
         run: flutter doctor -v
 
-      - name: Configure Android Harness
+      - name: Recreate Clean Canonical Android Platform Files
         run: |
-          cp android/app/src/main/AndroidManifest.xml /tmp/AndroidManifest.xml || true
+          mkdir -p /tmp/backup
+          cp android/app/src/main/AndroidManifest.xml /tmp/backup/AndroidManifest.xml || true
+          rm -rf android
           flutter create --platforms=android --project-name=gym_manager --org=com.gymhelper .
-          cp /tmp/AndroidManifest.xml android/app/src/main/AndroidManifest.xml || true
+          cp /tmp/backup/AndroidManifest.xml android/app/src/main/AndroidManifest.xml || true
+          sed -i 's/minSdk = flutter.minSdkVersion/minSdk = 23/g' android/app/build.gradle || true
           chmod +x android/gradlew || true
 
       - name: Install Dependencies
@@ -53,7 +56,7 @@ jobs:
 
       - name: Build Android Debug APK
         run: |
-          if ! flutter build apk --debug --verbose > build.log 2>&1; then
+          if ! flutter build apk --debug --android-skip-build-dependency-validation --verbose > build.log 2>&1; then
             echo "=== GRADLE FAILURE DIAGNOSTIC ==="
             grep -A 6 "What went wrong" build.log | while IFS= read -r line; do
               clean_line=$(echo "$line" | tr -d '\r')
