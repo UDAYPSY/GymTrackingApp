@@ -23,7 +23,6 @@ if (flutterVersionName == null) {
 android {
     namespace "com.gymhelper.gymmanager"
     compileSdk 34
-    ndkVersion flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
