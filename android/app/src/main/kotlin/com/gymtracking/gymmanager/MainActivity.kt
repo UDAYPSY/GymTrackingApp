@@ -1,4 +1,4 @@
-package com.gymhelper.gymmanager
+package com.gymtracking.gymmanager
 
 import io.flutter.embedding.android.FlutterActivity
 

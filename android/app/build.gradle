@@ -21,7 +21,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.gymhelper.gymmanager"
+    namespace "com.gymtracking.gymmanager"
     compileSdk 34
 
     compileOptions {
@@ -34,7 +34,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.gymhelper.gymmanager"
+        applicationId "com.gymtracking.gymmanager"
         minSdk 23
         targetSdk 34
         versionCode flutterVersionCode.toInteger()
