@@ -37,9 +37,17 @@ jobs:
 
       - name: Align Android Harness with Flutter SDK
         run: |
-          cp android/app/src/main/AndroidManifest.xml /tmp/AndroidManifest.xml.bak
+          # Backup custom resources and manifest
+          cp -r android/app/src/main/res /tmp/res_bak
+          cp android/app/src/main/AndroidManifest.xml /tmp/manifest_bak
+          
+          # Clean and regenerate official Android harness native to this runner's Flutter SDK
+          rm -rf android
           flutter create . --platforms=android --org com.gymhelper --project-name gymmanager
-          cp /tmp/AndroidManifest.xml.bak android/app/src/main/AndroidManifest.xml
+          
+          # Restore custom resources and manifest
+          cp -r /tmp/res_bak/* android/app/src/main/res/
+          cp /tmp/manifest_bak android/app/src/main/AndroidManifest.xml
           
           # Ensure minSdk is 23 (required by mobile_scanner)
           if [ -f android/app/build.gradle ]; then
@@ -58,6 +66,9 @@ jobs:
           echo "flutter.minSdkVersion=23" >> android/local.properties
           cat android/local.properties
           chmod +x android/gradlew
+          
+          echo "=== Official Android Structure ==="
+          ls -la android/
 
       - name: Install Dependencies
         run: flutter pub get
