@@ -35,8 +35,23 @@ jobs:
       - name: Verify Flutter Installation
         run: flutter doctor -v
 
-      - name: Configure Android local.properties
+      - name: Align Android Harness with Flutter SDK
         run: |
+          cp android/app/src/main/AndroidManifest.xml /tmp/AndroidManifest.xml.bak
+          flutter create . --platforms=android --org com.gymhelper --project-name gymmanager
+          cp /tmp/AndroidManifest.xml.bak android/app/src/main/AndroidManifest.xml
+          
+          # Ensure minSdk is 23 (required by mobile_scanner)
+          if [ -f android/app/build.gradle ]; then
+            sed -i 's/minSdk = flutter.minSdkVersion/minSdk = 23/g' android/app/build.gradle || true
+            sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 23/g' android/app/build.gradle || true
+            sed -i 's/minSdk [0-9]\+/minSdk 23/g' android/app/build.gradle || true
+          fi
+          if [ -f android/app/build.gradle.kts ]; then
+            sed -i 's/minSdk = flutter.minSdkVersion/minSdk = 23/g' android/app/build.gradle.kts || true
+            sed -i 's/minSdk = [0-9]\+/minSdk = 23/g' android/app/build.gradle.kts || true
+          fi
+          
           FLUTTER_SDK_DIR="$(dirname "$(dirname "$(which flutter)")")"
           echo "sdk.dir=$ANDROID_HOME" > android/local.properties
           echo "flutter.sdk=$FLUTTER_SDK_DIR" >> android/local.properties
